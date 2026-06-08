@@ -2,7 +2,7 @@ import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import Footer from './components/Footer.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
-import { DarkModeProvider } from './context/DarkModeContext.jsx';
+
 
 const LandingPage = lazy(() => import('./pages/LandingPage.jsx'));
 const BookingRouter = lazy(() => import('./pages/BookingRouter.jsx'));
@@ -79,12 +79,11 @@ function AppRoutes() {
 
 function App() {
   return (
-    <DarkModeProvider>
-      <Router>
-        <AppRoutes />
-      </Router>
-    </DarkModeProvider>
+    <Router>
+      <AppRoutes />
+    </Router>
   );
 }
+
 
 export default App;

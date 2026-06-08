@@ -31,7 +31,7 @@ function AboutClinicSection() {
 
           <article className="space-y-4 text-lg leading-relaxed text-police dark:text-slate-200">
             <p className="first-letter:float-left first-letter:mr-2 first-letter:text-5xl first-letter:font-bold first-letter:leading-tight first-letter:text-maastricht dark:first-letter:text-slate-100">
-              DentalEase was founded in 2018 with a single mission: to make
+              Dents-City was founded in 2018 with a single mission: to make
               dental care comfortable, transparent, and accessible. Our
               state-of-the-art clinic combines advanced technology with a
               patient-first philosophy.
@@ -85,9 +85,9 @@ function AboutClinicSection() {
 
           <div className="mx-auto max-w-4xl overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-900">
             <iframe
-              title="DentalEase Location - Porta Vaga, Baguio City"
+              title="Dents-City Location - Porta Vaga, Baguio City"
               className="h-96 w-full rounded-2xl"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3827.4277839639556!2d120.59111231486734!3d16.41202498854845!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3391a1681ee1f3b1%3A0x8c82d6b6155c8b8!2sPorta%20Vaga%20Mall!5e0!3m2!1sen!2sph!4v1690000000000"
+              src="https://www.google.com/maps?output=embed&z=18&q=16.412571159905283%2C120.5983278710422"
               allowFullScreen=""
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"

@@ -6,7 +6,7 @@ function Footer() {
     <footer className="bg-maastricht px-6 py-10 text-periwinkle">
       <div className="mx-auto grid max-w-7xl gap-8 text-sm md:grid-cols-3">
         <div>
-          <h4 className="mb-3 text-lg font-semibold text-white">AppointEase</h4>
+          <h4 className="mb-3 text-lg font-semibold text-white">Dents-City</h4>
           <p className="leading-relaxed">
             Professional appointment scheduling with secure SMS verification.
           </p>
@@ -63,7 +63,7 @@ function Footer() {
       </div>
 
       <div className="mt-8 text-center text-xs opacity-50">
-        &copy; {new Date().getFullYear()} AppointEase. All rights reserved.
+        &copy; {new Date().getFullYear()} Dents-City. All rights reserved.
       </div>
     </footer>
   );

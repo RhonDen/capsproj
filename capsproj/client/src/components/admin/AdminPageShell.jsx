@@ -9,7 +9,7 @@ function AdminPageShell({
   children,
   backTo = '/admin/dashboard',
   backLabel = 'Dashboard',
-  actions = null,
+      actions = null,
   maxWidth = 'max-w-7xl',
 }) {
   const navigate = useNavigate();
@@ -25,7 +25,8 @@ function AdminPageShell({
   };
 
   return (
-    <div className="min-h-screen bg-periwinkle p-6 dark:bg-slate-900">
+    <div className="min-h-screen bg-periwinkle p-6">
+
       <div className={`mx-auto ${maxWidth}`}>
 
 
@@ -50,16 +51,7 @@ function AdminPageShell({
                 </div>
               ) : null}
 
-              <div>
-                <h1 className="text-2xl font-bold text-maastricht dark:text-slate-100 md:text-3xl">
-                  {title}
-                </h1>
-                {description ? (
-                  <p className="mt-2 max-w-3xl text-sm leading-7 text-police dark:text-slate-300 md:text-base">
-                    {description}
-                  </p>
-                ) : null}
-              </div>
+              <div />
             </div>
           </div>
 

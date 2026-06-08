@@ -10,11 +10,14 @@ function ProtectedRoute({ children }) {
 
     const verifyAdmin = async () => {
       try {
-        await axios.get('/api/admin/check-auth');
+        const response = await axios.get('/api/admin/check-auth');
         if (isMounted) {
-          setIsAuth(true);
+          setIsAuth(Boolean(response?.data?.authenticated));
         }
-      } catch {
+      } catch (error) {
+        // Surface server error messages (helps debug missing/blocked cookie issues)
+        // eslint-disable-next-line no-console
+        console.error('Admin auth check failed:', error?.response?.data || error?.message);
         if (isMounted) {
           setIsAuth(false);
         }

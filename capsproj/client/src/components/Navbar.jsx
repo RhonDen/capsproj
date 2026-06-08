@@ -51,7 +51,7 @@ function Navbar() {
           className="flex items-center gap-2 text-xl font-semibold tracking-tight"
         >
           <CalendarDays className="h-6 w-6 text-silver-lake" />
-          <span>AppointEase Admin</span>
+          <span>Dents-City Admin</span>
         </Link>
 
         <div className="flex flex-1 flex-col gap-3 lg:flex-row lg:items-center lg:justify-end">
@@ -85,7 +85,7 @@ function Navbar() {
             })}
           </div>
 
-          <DarkModeToggle />
+
         </div>
 
       </div>

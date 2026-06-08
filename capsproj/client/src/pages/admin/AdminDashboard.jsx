@@ -145,12 +145,12 @@ function AdminDashboard() {
     : '';
 
   return (
-    <AdminPageShell
-      title="Admin Dashboard"
-      description="Review new booking requests, approve or reject them, and manage today's appointment outcomes once their scheduled time begins."
+      <AdminPageShell
+      title={null}
+      description={null}
       icon={LayoutDashboard}
       backTo={null}
-    >
+>
       {error ? (
         <p className="mb-6 rounded-2xl bg-red-50 p-4 text-sm text-red-700 dark:bg-red-900/30 dark:text-red-400">{error}</p>
       ) : null}

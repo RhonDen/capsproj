@@ -187,7 +187,8 @@ router.post(
     res.cookie('admin_token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      // strict can break cookie auth when client and API are on different origins/ports (common in dev)
+      sameSite: 'lax',
       maxAge: 60 * 60 * 1000,
     });
 
@@ -199,7 +200,7 @@ router.post('/logout', auth, (req, res) => {
   res.clearCookie('admin_token', {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    sameSite: 'lax',
   });
 
   return res.json({ message: 'Logged out.' });
