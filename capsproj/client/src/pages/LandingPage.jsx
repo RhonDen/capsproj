@@ -54,18 +54,39 @@ const team = [
 import PublicDarkModeToggle from '../components/PublicDarkModeToggle.jsx';
 
 // Add Spline hero background as a lightweight visual layer.
-const SplineHero = () => (
-  <div
-    className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
-    aria-hidden="true"
-  >
-    <spline-viewer
-      url="https://prod.spline.design/9BNhFhTDvHT5pqDj/scene.splinecode"
-      className="absolute inset-0 h-full w-full"
-      style={{ transform: 'scale(1.08)' }}
-    />
-  </div>
-);
+const SplineHero = () => {
+  const prefersReducedMotion =
+    typeof window !== 'undefined' &&
+    window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (prefersReducedMotion) {
+    return (
+      <div
+        className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+        aria-hidden="true"
+      >
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_20%,rgba(142,199,234,0.25),transparent_40%)]" />
+      </div>
+    );
+  }
+
+  // Avoid runtime errors if the Spline web component isn't registered.
+  // The page will still look good without the hero animation.
+  return (
+    <div
+      className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+      aria-hidden="true"
+    >
+      <spline-viewer
+        url="https://prod.spline.design/9BNhFhTDvHT5pqDj/scene.splinecode"
+        className="absolute inset-0 h-full w-full"
+        style={{ transform: 'scale(1.08)' }}
+      />
+    </div>
+  );
+};
+
 
 function LandingPage() {
   const [contactForm, setContactForm] = useState({

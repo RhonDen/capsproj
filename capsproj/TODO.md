@@ -11,6 +11,12 @@
 - [x] Simplify `/booking` landing page
   - [x] Remove guides/steps and show only “Book Appointment” + “Check History” buttons with icons
 
+- [x] Fix Spline hero runtime safety
+  - [x] Verify Spline is safe to render in environments without the custom element loaded
+  - [x] Add reduced-motion fallback handling
+
+
+
 - [ ] MySQL migration functional verification (backend + frontend)
   - [ ] Ensure sequelize is using MySQL when `DB_DIALECT=mysql` (and not silently falling back)
   - [ ] Run server startup against MySQL + confirm tables sync/migrations
@@ -18,4 +24,10 @@
   - [ ] Verify admin login + status updates
   - [ ] Verify blocked dates + walk-in flow
   - [ ] Verify contact form endpoints
+
+- [ ] Deployment hardening
+  - [ ] Confirm rate-limiting coverage for OTP verify endpoints
+  - [ ] Confirm production CORS + cookie settings
+  - [ ] Run smoke-test and client build for final verification
+
 
