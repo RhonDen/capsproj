@@ -141,9 +141,14 @@ function BookingHistory() {
                 required
                 className="flex-1 rounded-2xl border border-gray-200 bg-white p-3 focus:border-silver-lake focus:outline-none focus:ring-4 focus:ring-silver-lake/15"
               />
+              <p className="text-xs text-silver-lake">
+                If your request date becomes blocked, the clinic may reject
+                it during admin review.
+              </p>
               <button
-                type="submit"
+                type="button"
                 disabled={loading}
+                onClick={() => requestOtp({ preventDefault: () => {} })}
                 className="flex items-center justify-center gap-2 rounded-2xl bg-maastricht px-5 py-3 text-white transition hover:-translate-y-0.5 hover:bg-police disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {loading ? (

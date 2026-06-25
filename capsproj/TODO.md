@@ -1,33 +1,9 @@
-# TODO
+- [ ] Add patient-portal display of blocked/unavailable dates (“Dates where the clinic will be unavailable”) before booking and before checking history.
+- [x] Create new server endpoint for public blocked dates (no admin auth).
 
-- [x] Fix booking phone validation issues
-  - [x] Strip phone number formatting before calling `POST /api/bookings/request-otp` and `verify-otp`
-  - [x] Ensure backend receives only `09XXXXXXXXX` digits
+- [x] Update patient portal home page to fetch and render those blocked dates.
 
-- [x] Fix time slot availability for today
-  - [x] In `GET /api/bookings/availability`, if requested date is today, remove slots earlier than current time
-  - [x] Return only future start times
-
-- [x] Simplify `/booking` landing page
-  - [x] Remove guides/steps and show only “Book Appointment” + “Check History” buttons with icons
-
-- [x] Fix Spline hero runtime safety
-  - [x] Verify Spline is safe to render in environments without the custom element loaded
-  - [x] Add reduced-motion fallback handling
-
-
-
-- [ ] MySQL migration functional verification (backend + frontend)
-  - [ ] Ensure sequelize is using MySQL when `DB_DIALECT=mysql` (and not silently falling back)
-  - [ ] Run server startup against MySQL + confirm tables sync/migrations
-  - [ ] Verify OTP booking flow end-to-end
-  - [ ] Verify admin login + status updates
-  - [ ] Verify blocked dates + walk-in flow
-  - [ ] Verify contact form endpoints
-
-- [ ] Deployment hardening
-  - [ ] Confirm rate-limiting coverage for OTP verify endpoints
-  - [ ] Confirm production CORS + cookie settings
-  - [ ] Run smoke-test and client build for final verification
+- [ ] Update booking history page to show blocked dates when patient opens history (optional based on requirement).
+- [x] Run backend/frontend quick checks.
 
 

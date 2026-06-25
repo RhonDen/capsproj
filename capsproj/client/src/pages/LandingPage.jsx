@@ -100,6 +100,10 @@ function LandingPage() {
   const handleContactSubmit = async (event) => {
     event.preventDefault();
 
+    // Extra safety: if user double-clicks or submits again quickly,
+    // keep it from sending again.
+    if (submitting) return;
+
     if (!contactForm.name.trim() || !contactForm.email.trim()) {
       setContactStatus({
         type: 'error',

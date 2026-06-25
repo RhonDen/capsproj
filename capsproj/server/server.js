@@ -1,4 +1,5 @@
 require('dotenv').config();
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -14,6 +15,7 @@ app.disable('x-powered-by');
 
 // Add secure defaults for headers.
 app.use(helmet());
+
 
 // Only the configured frontend is allowed to use cookie-authenticated requests.
 app.use(
@@ -60,7 +62,20 @@ app.get('/api/health', (req, res) => {
 
 // Routes are registered after DB connects (see startServer)
 
+// Serve React build (production)
+const clientDistPath = path.join(__dirname, '..', 'client', 'dist');
+app.use(express.static(clientDistPath));
+
+// SPA fallback: serve index.html for all non-API routes
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api/')) return next();
+  res.sendFile(path.join(clientDistPath, 'index.html'), (err) => {
+    if (err) next();
+  });
+});
+
 app.use((error, req, res, next) => {
+
   void next;
   console.error('Unhandled server error:', error);
   res.status(500).json({ error: 'Internal server error.' });
@@ -80,10 +95,13 @@ const startServer = async () => {
     const bookingsRoute = require('./routes/bookings');
     const adminRoute = require('./routes/admin');
     const contactRoute = require('./routes/contact');
+    const publicBlockedDatesRoute = require('./routes/publicBlockedDates');
 
     app.use('/api/bookings', bookingsRoute);
     app.use('/api/contact', contactRoute);
     app.use('/api/admin', adminRoute);
+    app.use('/api/public', publicBlockedDatesRoute);
+
 
     console.log(
       database.mode === 'sqlite'
@@ -94,7 +112,9 @@ const startServer = async () => {
     const port = process.env.PORT || 5000;
     app.listen(port, () => {
       console.log(`Server running on port ${port}`);
+      console.log(`Serving React from: ${clientDistPath}`);
     });
+
   } catch (error) {
     console.error('MongoDB connection error:', error);
     process.exit(1);

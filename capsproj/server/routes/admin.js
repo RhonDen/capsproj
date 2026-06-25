@@ -9,6 +9,8 @@ const { Op } = require('sequelize');
 const ALLOWED_SERVICES = require('../constants/services');
 const auth = require('../middleware/auth');
 const sendSMS = require('../utils/sendSMS');
+const { getJwtSecret } = require('../utils/jwtSecret');
+
 const { getNextSerialNumber } = require('../utils/serialNumbers');
 const {
   buildSchedule,
@@ -202,17 +204,17 @@ router.post(
       return res.status(401).json({ error: 'Invalid credentials.' });
     }
 
-    // In development, allow smoke-tests to run even if JWT_SECRET isn't set.
-    // For production deployments you must set JWT_SECRET explicitly.
-    const jwtSecret = process.env.JWT_SECRET || 'dev_jwt_secret_change_me';
+    const jwtSecret = getJwtSecret();
+
+
 
     const token = jwt.sign(
-
       { id: admin.id, username: admin.username },
       jwtSecret,
-
-      { expiresIn: process.env.JWT_EXPIRES_IN || '1h' }
+      // Long-lived session: 365 days. (Admin cookies will keep the admin accessible 24/7.)
+      { expiresIn: process.env.JWT_EXPIRES_IN || '365d' }
     );
+
 
 
     res.cookie('admin_token', token, {
@@ -220,9 +222,10 @@ router.post(
       // Ensure cookie is accepted in dev HTTP. (secure cookies are ignored on HTTP.)
       secure: false,
       sameSite: 'lax',
-
-      maxAge: 60 * 60 * 1000,
+      // Match the JWT expiry so the cookie keeps admin accessible 24/7.
+      maxAge: 365 * 24 * 60 * 60 * 1000,
     });
+
 
     return res.json({ message: 'Login successful.' });
   })
@@ -288,10 +291,15 @@ router.get(
 );
 
 router.patch(
-  '/appointments/:id/status',
+    '/appointments/:id/status',
   auth,
   [
-    param('id').isMongoId().withMessage('Invalid appointment ID.'),
+    // Appointment primary key is a BIGINT (numeric) in this project.
+    // Accept numeric ids (stringified numbers from the client) instead of MongoId.
+    param('id')
+      .isString()
+      .matches(/^\d+$/)
+      .withMessage('Invalid appointment ID.'),
     body('status')
       .isIn(['accepted', 'rejected', 'completed', 'notCompleted'])
       .withMessage('Invalid appointment status.'),
@@ -472,16 +480,32 @@ router.get(
     // Build clients list by fetching appointments and reducing in JS
     const rows = await Appointment.findAll({ where: { otp: null } });
     const map = new Map();
+
     rows.forEach((r) => {
       const obj = r.get ? r.get({ plain: true }) : r;
       const appointmentDateTime = obj.scheduledStart || obj.date || obj.createdAt;
+
       const prev = map.get(obj.number);
-      if (!prev || appointmentDateTime > prev) {
-        map.set(obj.number, appointmentDateTime);
+      if (!prev || appointmentDateTime > prev.lastAppointment) {
+        map.set(obj.number, {
+          number: obj.number,
+          lastAppointment: appointmentDateTime,
+          firstName: obj.firstName,
+          lastName: obj.lastName,
+          middleInitial: obj.middleInitial,
+        });
       }
     });
 
-    const clients = Array.from(map.entries()).map(([number, lastAppointment]) => ({ number, lastAppointment }));
+    const clients = Array.from(map.values()).map((c) => ({
+      number: c.number,
+      lastAppointment: c.lastAppointment,
+      firstName: c.firstName || '',
+      lastName: c.lastName || '',
+      middleInitial: c.middleInitial || '',
+      fullName: [c.lastName, c.firstName, c.middleInitial].filter(Boolean).join(', '),
+    }));
+
     clients.sort((a, b) => new Date(b.lastAppointment) - new Date(a.lastAppointment));
     res.json(clients);
   })

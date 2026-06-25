@@ -30,9 +30,9 @@ const sendSMS = async (phone, message) => {
   } catch (error) {
     console.error('SMS sending failed:', error.response?.data || error.message);
 
-    // During local dev / smoke tests we can allow OTP flow to succeed without
-    // the external provider by returning a stubbed response.
-    if (process.env.NODE_ENV !== 'production') {
+    // During development we may want the UI flow to continue even if the
+    // external SMS provider is down. Enable explicitly.
+    if (process.env.ALLOW_SMS_STUB === 'true') {
       return { provider: 'stub', message: 'SMS not sent (stubbed).' };
     }
 
